@@ -82,6 +82,9 @@ const images = [
     }
 ];
 
+
+
+//creazioni variabili che mi servono per manipolazione DOM
 const upArrowEl = document.getElementById("up-arrow")
 const downArrowEl = document.getElementById("down-arrow")
 const startAutoplayEl = document.getElementById("start")
@@ -96,43 +99,62 @@ let autoplay;
 let reverseAutoplay;
 
 
-
+// mostro l'immagine con index "0" contenura nell'array appena si carica la pagina
 currentImg.src = images[0].image
 currentImgTitle.innerHTML = images[0].title
 currentImgDescription.innerHTML = images[0].text
 imagesContainerEl.append(currentImg)
 imagesContainerEl.append(currentImgTitle)
 imagesContainerEl.append(currentImgDescription)
+
+
+//creo un contatore per gli indici delle images
 let index = 0 
 
 
+
+// creo le thumbnails 
 createThumbnail(images)
 
-
+// aggiungo classe active alla thumbnail con index "0"
 let thumbList = document.querySelectorAll(".thumbnail")
-thumbList[index].classList.add("active")
+thumbList[0].classList.add("active")
 
 
+
+/* _____ FRECCE _____ */
+
+// aggiungo evento al click della freccia in alto
 upArrowEl.addEventListener("click", () => {
-    
+
     goUp();
     
 })
-
+    
+// aggiungo evento al click della freccia in basso
 downArrowEl.addEventListener("click", () =>{
 
-    
     goDown();
 
 })
 
+
+/* ______ / FRECCE _____ */
+    
+
+
+/* _____ BOTTONI _____ */
+
+
+
+//aggiungo evento al tasto start autoplay
 startAutoplayEl.addEventListener("click", () =>{
 
      autoplay = setInterval(goUp, 2000)
 
 })
 
-
+// aggiungo evento al tasto stop autoplay
 stopAutoplayEl.addEventListener("click", () =>{
 
     clearInterval(autoplay)
@@ -140,12 +162,16 @@ stopAutoplayEl.addEventListener("click", () =>{
 })
 
 
+// aggiungo evento al tasto reverse autoplay
 reverseAutoplayEl.addEventListener("click", () => {
     
 
     reverseAutoplay = setInterval(goDown, 2000);
 
 })
+
+
+/* ______ /BOTTONI ______ */
 
     
       
