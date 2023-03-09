@@ -92,7 +92,7 @@ startingImage(currentImg,currentImgTitle,currentImgDescription,imagesContainerEl
 
 
 //creo un contatore per gli indici delle images
-let index; 
+let index = 0 
 
 
 // creo le thumbnails 
