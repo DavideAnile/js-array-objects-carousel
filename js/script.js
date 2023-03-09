@@ -84,11 +84,16 @@ const images = [
 
 const upArrowEl = document.getElementById("up-arrow")
 const downArrowEl = document.getElementById("down-arrow")
+const startAutoplayEl = document.getElementById("start")
+const stopAutoplayEl = document.getElementById("stop")
+const reverseAutoplayEl = document.getElementById("reverse")
 const imagesContainerEl = document.getElementById("img-container")
 const thumbnailsContainerEl = document.getElementById("thumbnails-container")
 let currentImg = document.createElement("img");
 let currentImgTitle = document.getElementById("title")
 let currentImgDescription = document.getElementById("description")
+let autoplay;
+let reverseAutoplay;
 
 
 
@@ -118,6 +123,27 @@ downArrowEl.addEventListener("click", () =>{
 
     
     goDown();
+
+})
+
+startAutoplayEl.addEventListener("click", () =>{
+
+     autoplay = setInterval(goUp, 2000)
+
+})
+
+
+stopAutoplayEl.addEventListener("click", () =>{
+
+    clearInterval(autoplay)
+    clearInterval(reverseAutoplay)
+})
+
+
+reverseAutoplayEl.addEventListener("click", () => {
+    
+
+    reverseAutoplay = setInterval(goDown, 2000);
 
 })
 
