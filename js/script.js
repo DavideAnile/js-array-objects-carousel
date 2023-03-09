@@ -35,23 +35,11 @@ BONUS 3:
 Aggiungere bottoni di start/stop e di inversione del 
 meccanismo di autoplay.
 
-
-
-
 */
 
 
 
 
-/* 
-
-Milestone 1:
-Ora rimuoviamo i contenuti statici e usiamo l’array di oggetti letterali 
-per popolare dinamicamente il carosello.
-Al click dell'utente sulle frecce verso sinistra o destra, 
-l'immagine attiva diventerà visibile e dovremo aggiungervi titolo e testo.
-
-*/
 
 
 const images = [
@@ -109,12 +97,16 @@ imagesContainerEl.append(currentImgDescription)
 
 
 //creo un contatore per gli indici delle images
-let index = 0 
+let index; 
 
-
+let thumbnail;
 
 // creo le thumbnails 
-createThumbnail(images)
+ createThumbnail(images , thumbnail)
+
+
+
+
 
 // aggiungo classe active alla thumbnail con index "0"
 let thumbList = document.querySelectorAll(".thumbnail")
@@ -122,60 +114,124 @@ thumbList[0].classList.add("active")
 
 
 
-/* _____ FRECCE _____ */
 
-// aggiungo evento al click della freccia in alto
-upArrowEl.addEventListener("click", () => {
 
-    goUp();
+
+
+
+for(let i = 0; i < thumbList.length;i++){
+
+    let clicked = thumbList[i]
     
-})
+// aggiungo evento alla thumbnail cliccata
+    clicked.addEventListener("click", function(){
+       
+        thumbList = document.querySelectorAll(".thumbnail")
+
+// creo un ciclo for per rimuoverre da tutte le thumbnail la classe :active
+        for(let k = 0; k < thumbList.length;k++){
+            thumbList[k].classList.remove("active")
+        }
+
+// aggiungo la classe :active alla thumbnail cliccata         
+        clicked.classList.add("active")
+
+// cambio immagine grande in base all'indice della thumbnail cliccata        
+        currentImg.src = images[i].image
+
+//l'indice assume il valore in base alla thumbnail cliccata        
+        index = i
+    })
+
+}
+
+    /* _____ FRECCE _____ */
     
-// aggiungo evento al click della freccia in basso
-downArrowEl.addEventListener("click", () =>{
-
-    goDown();
-
-})
-
-
-/* ______ / FRECCE _____ */
+    // aggiungo evento al click della freccia in alto
+    upArrowEl.addEventListener("click", () => {
     
-
-
-/* _____ BOTTONI _____ */
-
-
-
-//aggiungo evento al tasto start autoplay
-startAutoplayEl.addEventListener("click", () =>{
-
-     autoplay = setInterval(goUp, 2000)
-
-})
-
-// aggiungo evento al tasto stop autoplay
-stopAutoplayEl.addEventListener("click", () =>{
-
-    clearInterval(autoplay)
-    clearInterval(reverseAutoplay)
-})
-
-
-// aggiungo evento al tasto reverse autoplay
-reverseAutoplayEl.addEventListener("click", () => {
+        goUp();
+        
+    })
+        
+    // aggiungo evento al click della freccia in basso
+    downArrowEl.addEventListener("click", () =>{
     
+        goDown();
+    
+    })
+    
+    
+    /* ______ / FRECCE _____ */
+        
+    
+    
+    /* _____ BOTTONI _____ */
+    
+    
+    
+    //aggiungo evento al tasto start autoplay
+    startAutoplayEl.addEventListener("click", () =>{
+    
+        clearInterval(reverseAutoplay)
+         // al clik la funzione goUp viene ripetuta ogni 2 secondi   
+         autoplay = setInterval(goUp, 2000)
+    
+    })
+    
+    // aggiungo evento al tasto stop autoplay
+    stopAutoplayEl.addEventListener("click", () =>{
+    
+        //al click stop a tutte le timing function attive
+        clearInterval(autoplay)
+        clearInterval(reverseAutoplay)
+    })
+    
+    
+    // aggiungo evento al tasto reverse autoplay
+    reverseAutoplayEl.addEventListener("click", () => {
+    
+        clearInterval(autoplay)
+        // al click la funzione goDown viene ripetuta ogni 2 secondi
+        reverseAutoplay = setInterval(goDown, 2000);
+    
+    })
+    
+    
+    /* ______ /BOTTONI ______ */
 
-    reverseAutoplay = setInterval(goDown, 2000);
-
-})
 
 
-/* ______ /BOTTONI ______ */
+
+
+
+
+
+
+
+
+
+
 
     
       
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -196,6 +252,7 @@ reverseAutoplayEl.addEventListener("click", () => {
 
 function goUp (){
 
+    // // rimuovo la classe active dalla thumbnail precedente
     thumbList[index].classList.remove("active")
 
     if (index == 0){
@@ -205,13 +262,15 @@ function goUp (){
         index--
     }
 
-    console.log(index)
+    // appendo all'images container gli elementi relativi alle proprietò dell'indice dell'array "images"
         currentImg.src = images[index].image
         currentImgTitle.innerHTML = images[index].title
         currentImgDescription.innerHTML = images[index].text
         imagesContainerEl.append(currentImg)
         imagesContainerEl.append(currentImgTitle)
         imagesContainerEl.append(currentImgDescription)
+
+        // // aggiungo classe .active alla thumbnail corrente 
         thumbList[index].classList.add("active")
         
     }
@@ -222,6 +281,7 @@ function goUp (){
 
 function goDown (){
 
+    // rimuovo la classe active dalla thumbnail precedente
     thumbList[index].classList.remove("active")
 
     if (index == 4){
@@ -231,13 +291,15 @@ function goDown (){
         index++
     }
 
-    console.log(index)
+    // appendo all'images container gli elementi relativi alle proprietò dell'indice dell'array "images"
         currentImg.src = images[index].image
         currentImgTitle.innerHTML = images[index].title
         currentImgDescription.innerHTML = images[index].text
         imagesContainerEl.append(currentImg)
         imagesContainerEl.append(currentImgTitle)
         imagesContainerEl.append(currentImgDescription)
+
+    // aggiungo classe .active alla thumbnail corrente    
         thumbList[index].classList.add("active")
     }
 
@@ -245,19 +307,24 @@ function goDown (){
 
 
 
-function createThumbnail(array){
+function createThumbnail(array, newEl){
 
 
     for(let i = 0;i < array.length;i++){
 
         
-        let newThumbnail = document.createElement("img")
-        newThumbnail.src = array[i].image
-        newThumbnail.classList.add("thumbnail")
-        newThumbnail.style.width = "100%"
-        newThumbnail.style.height = `calc(100% / ${array.length})`;
-        thumbnailsContainerEl.append(newThumbnail);
+        newEl = document.createElement("img")
+        
+        newEl.src = array[i].image
+        newEl.classList.add("thumbnail")
+        newEl.style.width = "100%"
+        newEl.style.height = `calc(100% / ${array.length})`;
+        thumbnailsContainerEl.append(newEl);
 
+        
     }
+
+    return newEl
+    
 
 }
