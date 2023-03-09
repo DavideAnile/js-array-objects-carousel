@@ -87,118 +87,116 @@ let autoplay;
 let reverseAutoplay;
 
 
-// mostro l'immagine con index "0" contenura nell'array appena si carica la pagina
-currentImg.src = images[0].image
-currentImgTitle.innerHTML = images[0].title
-currentImgDescription.innerHTML = images[0].text
-imagesContainerEl.append(currentImg)
-imagesContainerEl.append(currentImgTitle)
-imagesContainerEl.append(currentImgDescription)
+//al caricamento della pagina mostro l'immagine, title e description con index "0" contenuti nell'array 
+startingImage(currentImg,currentImgTitle,currentImgDescription,imagesContainerEl,images,0)
 
 
 //creo un contatore per gli indici delle images
 let index; 
 
-let thumbnail;
 
 // creo le thumbnails 
+let thumbnail;
  createThumbnail(images , thumbnail)
 
 
+ // aggiungo classe active alla thumbnail con index "0"
+ let thumbList = document.querySelectorAll(".thumbnail")
+ thumbList[0].classList.add("active")
+
+
+ //creo ciclo for per prendere la singola thumbnail
+ for(let i = 0; i < thumbList.length;i++){
+ 
+     // aggiungo evento alla thumbnail cliccata
+         thumbList[i].addEventListener("click", function(){
+            
+            
+     
+     // creo un ciclo for per rimuoverre da tutte le thumbnail la classe :active
+             for(let k = 0; k < thumbList.length;k++){
+                 thumbList[k].classList.remove("active")
+             }
+     
+     // aggiungo la classe :active e cursore "pointer" alla thumbnail cliccata         
+             thumbList[i].classList.add("active")
+             thumbList[i].style.cursor = "pointer"
+     
+     // cambio immagine grande in base all'indice della thumbnail cliccata        
+             currentImg.src = images[i].image
+     
+     //l'indice assume il valore in base alla thumbnail cliccata        
+             index = i
+         })
+     
+     }
+     
+   
+     /* _____ FRECCE _____ */
+     
+     // aggiungo evento al click della freccia in alto
+     upArrowEl.addEventListener("click", () => {
+     
+         goUp();
+         
+     })
+         
+     // aggiungo evento al click della freccia in basso
+     downArrowEl.addEventListener("click", () =>{
+     
+         goDown();
+     
+     })
+     
+     /* ______ / FRECCE _____ */
+     
+     
+     
+
+     
+     
+     /* _____ BOTTONI _____ */
+     
+     
+     //aggiungo evento al tasto start autoplay
+     startAutoplayEl.addEventListener("click", () =>{
+     
+         clearInterval(reverseAutoplay)
+          // al clik la funzione goUp viene ripetuta ogni 2 secondi   
+          autoplay = setInterval(goUp, 2000)
+     
+     })
+     
+     // aggiungo evento al tasto stop autoplay
+     stopAutoplayEl.addEventListener("click", () =>{
+     
+         //al click stop a tutte le timing function attive
+         clearInterval(autoplay)
+         clearInterval(reverseAutoplay)
+     })
+     
+     
+     // aggiungo evento al tasto reverse autoplay
+     reverseAutoplayEl.addEventListener("click", () => {
+     
+         clearInterval(autoplay)
+         // al click la funzione goDown viene ripetuta ogni 2 secondi
+         reverseAutoplay = setInterval(goDown, 2000);
+     
+     })
+     
+     
+     /* ______ /BOTTONI ______ */
 
 
 
-// aggiungo classe active alla thumbnail con index "0"
-let thumbList = document.querySelectorAll(".thumbnail")
-thumbList[0].classList.add("active")
 
 
 
 
-
-
-
-
-for(let i = 0; i < thumbList.length;i++){
-
-    let clicked = thumbList[i]
-    
-// aggiungo evento alla thumbnail cliccata
-    clicked.addEventListener("click", function(){
-       
-        thumbList = document.querySelectorAll(".thumbnail")
-
-// creo un ciclo for per rimuoverre da tutte le thumbnail la classe :active
-        for(let k = 0; k < thumbList.length;k++){
-            thumbList[k].classList.remove("active")
-        }
-
-// aggiungo la classe :active alla thumbnail cliccata         
-        clicked.classList.add("active")
-
-// cambio immagine grande in base all'indice della thumbnail cliccata        
-        currentImg.src = images[i].image
-
-//l'indice assume il valore in base alla thumbnail cliccata        
-        index = i
-    })
-
-}
-
-    /* _____ FRECCE _____ */
-    
-    // aggiungo evento al click della freccia in alto
-    upArrowEl.addEventListener("click", () => {
-    
-        goUp();
         
-    })
-        
-    // aggiungo evento al click della freccia in basso
-    downArrowEl.addEventListener("click", () =>{
-    
-        goDown();
-    
-    })
     
     
-    /* ______ / FRECCE _____ */
-        
-    
-    
-    /* _____ BOTTONI _____ */
-    
-    
-    
-    //aggiungo evento al tasto start autoplay
-    startAutoplayEl.addEventListener("click", () =>{
-    
-        clearInterval(reverseAutoplay)
-         // al clik la funzione goUp viene ripetuta ogni 2 secondi   
-         autoplay = setInterval(goUp, 2000)
-    
-    })
-    
-    // aggiungo evento al tasto stop autoplay
-    stopAutoplayEl.addEventListener("click", () =>{
-    
-        //al click stop a tutte le timing function attive
-        clearInterval(autoplay)
-        clearInterval(reverseAutoplay)
-    })
-    
-    
-    // aggiungo evento al tasto reverse autoplay
-    reverseAutoplayEl.addEventListener("click", () => {
-    
-        clearInterval(autoplay)
-        // al click la funzione goDown viene ripetuta ogni 2 secondi
-        reverseAutoplay = setInterval(goDown, 2000);
-    
-    })
-    
-    
-    /* ______ /BOTTONI ______ */
 
 
 
@@ -248,6 +246,21 @@ for(let i = 0; i < thumbList.length;i++){
 
 
 /*_________________FUNZIONI____________*/
+
+
+
+function startingImage (imgCorrente, titoloImgCorrente,descrImgCorrente,imagesContainer,array,primoIndice){
+
+
+    imgCorrente.src = array[primoIndice].image
+    titoloImgCorrente.innerHTML = array[primoIndice].title
+    descrImgCorrente.innerHTML = array[primoIndice].text
+    imagesContainer.append(imgCorrente)
+    imagesContainer.append(titoloImgCorrente)
+    imagesContainer.append(descrImgCorrente)
+}
+
+
 
 
 function goUp (){
